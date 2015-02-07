@@ -1,19 +1,38 @@
-var busboy = Npm.require('connect-busboy');
-Router.onBeforeAction(busboy({immediate: true}));
+var formidable = Npm.require('formidable');
+
 Router.onBeforeAction(function (req, res, next) {
-  if (req.busboy) {
-    req.files = [];
-    req.busboy.on('file', Meteor.bindEnvironment(function (fieldname, file, filename, encoding, mimetype) {
-      req.files.push({
-        file: file,
-        fieldname: fieldname,
-        filename: filename,
-        encoding: encoding,
-        mimetype: mimetype
-      });
+
+  var form = new formidable.IncomingForm();
+
+    form.parse(req, function(err, fields, files) {
+
+      if(fields){
+
+        if(req.body){
+
+        } else {
+          req.body = {};
+        }
+
+        _.extend(req.body, fields);
+
+      }
+
+      if(files){
+
+        if(req.files){
+
+        } else {
+          req.files = {};
+        }
+
+        _.extend(req.files, files);
+
+      }
+
       next();
-    }));
-  } else {
-    next();
-  }
+
+    });  
+
+
 });

@@ -5,7 +5,8 @@ Package.describe({
 });
 
 Npm.depends({
-  'connect-busboy': '0.0.2'
+//  'connect-busboy': '0.0.2'
+  'formidable': '1.0.16'
 });
 
 Package.onUse(function (api) {
